@@ -14,32 +14,29 @@
       <img src="a1.circuitgif.gif" />
       <img src="a1.doc.jpg" />
       <img src="IMG-3012.jpg" />
-      <p>int LED1 = 13; // Assigns variable LED1 to pin 13.
+      <pre><code>
+        int LED1 = 13; // Assigns variable LED1 to pin 13.
         int LED2 = 12; // Assigns variable LED2 to pin 12.
         int LED3 = 11; // Assigns variable LED3 to pin 11.
         
-        
         void setup() {
-          pinMode(LED1, OUTPUT); // Assigns LED1 pin as an output.
-          pinMode(LED2, OUTPUT); // Assigns LED2 pin as an output.
-          pinMode(LED3, OUTPUT); // Assigns LED3 pin as an output.
-        
+            pinMode(LED1, OUTPUT); // Assigns LED1 pin as an output.
+            pinMode(LED2, OUTPUT); // Assigns LED2 pin as an output.
+            pinMode(LED3, OUTPUT); // Assigns LED3 pin as an output.
         }
         
         void loop() {
-          // put your main code here, to run repeatedly:
-          digitalWrite(LED1, HIGH); // Turns LED1 on.
-          delay(500); // Wait 500 ms.
-          digitalWrite(LED2, HIGH); // Turns LED2 on.
-          digitalWrite(LED1, LOW); // Turns LED1 off.
-          delay(500); // Wait 500 ms.
-          digitalWrite(LED3, HIGH); // Turns LED3 on.
-          digitalWrite(LED2, LOW); // Turns LED2 off.
-          delay(500); // Wait 500 ms.
-          digitalWrite(LED3, LOW); // Turn LED3 off.
-          
-        
-        }</p>
+            digitalWrite(LED1, HIGH); // Turns LED1 on.
+            delay(500);              // Wait 500 ms.
+            digitalWrite(LED2, HIGH); // Turns LED2 on.
+            digitalWrite(LED1, LOW);  // Turns LED1 off.
+            delay(500);              // Wait 500 ms.
+            digitalWrite(LED3, HIGH); // Turns LED3 on.
+            digitalWrite(LED2, LOW);  // Turns LED2 off.
+            delay(500);              // Wait 500 ms.
+            digitalWrite(LED3, LOW);  // Turn LED3 off.
+        }
+              </code></pre>
 
     </div>
   </body>
