@@ -9,10 +9,57 @@
     <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <h1>Example Student's Assignment 2!</h1>
+    <h1>Cameron Miller - Assignment 2</h1>
     <div class="header">
-      <img src="red-panda.jpg" />
-      <p>Here is all the documentation for assignment 2!</p>
+      <br>
+      <img src="a2circuitgif.gif" />
+      <br>
+      <img src="A2 circuit pic.jpg" />
+      <br>
+      <img src="A2 Fade Schematic.jpg" />
+      <br>
+      <pre><code>
+        int pushButton = 8; // declares pin 8 as 'pushButton'.
+        bool isFading = false; // initializes 'isFading' as False.
+        bool lastButtonState = LOW; // initializes 'lastButtonState' as LOW.
+         
+        void setup() {
+          Serial.begin(9600); // initializes serial communication at 9600 bits per sec.
+          pinMode(13, OUTPUT); // Assigns pin 13 as an output.
+          pinMode(12, OUTPUT); // Assigns pin 12 as an output.
+          pinMode(11, OUTPUT); // Assigns pin 11 as an output.
+          pinMode(pushButton, INPUT_PULLUP); // Assigns LED2 pin as an input.
+        }
+        
+        void loop() {
+          int buttonState = digitalRead(pushButton); // Reads pin 8 and sets buttonState accordingly.
+          digitalWrite(12, HIGH); // Turns pin 12 on.
+          digitalWrite(13, HIGH); // Turns pin 13 on. 
+        
+          // if button is pressed isFading is set to equal !isFading.
+          if (buttonState == LOW && lastButtonState == HIGH) {
+            delay(50); // delay to prevent unwanted behavior ("debouncing time").
+            if (digitalRead(pushButton) == LOW) {
+              isFading = !isFading;
+            }
+          }
+          lastButtonState = buttonState; // lastButtonState is updated.
+        
+          if (isFading) { 
+            // changing brightness of pin 11 back and forth between 0 and 255 using two for loops.
+            for (int brightness = 0; brightness <=255; brightness += 5) {
+              analogWrite(11, brightness);
+              delay(50);
+            }
+            for (int brightness = 255; brightness >= 0; brightness -= 5) {
+              analogWrite(11, brightness);
+              delay(50);
+            }
+          } else {
+            analogWrite(11, 0); // turns off pin 11. 
+          }
+        }
+              </code></pre>
     </div>
   </body>
 </html>
