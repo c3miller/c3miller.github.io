@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+    <title>Cameron Miller's HCDE 439 Physical Computing Page!</title>
+
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <h1>Cameron Miller - Assignment 5</h1>
+    <div class="header">
+      <br>
+      <img src="a1circuitgif.gif" />
+      <br>
+      <img src="a1doc.jpg" />
+      <br>
+      <img src="IMG-3012.jpg" />
+      <br>
+      <pre><code>
+        int LED1 = 13; // Assigns variable LED1 to pin 13.
+        int LED2 = 12; // Assigns variable LED2 to pin 12.
+        int LED3 = 11; // Assigns variable LED3 to pin 11.
+        
+        void setup() {
+            pinMode(LED1, OUTPUT); // Assigns LED1 pin as an output.
+            pinMode(LED2, OUTPUT); // Assigns LED2 pin as an output.
+            pinMode(LED3, OUTPUT); // Assigns LED3 pin as an output.
+        }
+        
+        void loop() {
+            digitalWrite(LED1, HIGH); // Turns LED1 on.
+            delay(500);              // Wait 500 ms.
+            digitalWrite(LED2, HIGH); // Turns LED2 on.
+            digitalWrite(LED1, LOW);  // Turns LED1 off.
+            delay(500);              // Wait 500 ms.
+            digitalWrite(LED3, HIGH); // Turns LED3 on.
+            digitalWrite(LED2, LOW);  // Turns LED2 off.
+            delay(500);              // Wait 500 ms.
+            digitalWrite(LED3, LOW);  // Turn LED3 off.
+        }
+              </code></pre>
+
+    </div>
+  </body>
+</html>
