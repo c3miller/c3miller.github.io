@@ -10,38 +10,65 @@
   </head>
   <body>
     <h1>Cameron Miller - Assignment 5</h1>
-    <div class="header">
-      <br>
-      <img src="a1circuitgif.gif" />
-      <br>
-      <img src="a1doc.jpg" />
-      <br>
-      <img src="IMG-3012.jpg" />
-      <br>
+    <div class>
+        <img src="a5_gif.gif" style="display: block; width: auto; height: auto;" />
+        <br>
+        <img src="a5_circuit.jpg" style="display: block; width: auto; height: auto;" />
+        <img src="a5Schematic.jpg" style="display: block; width: auto; height: auto;" />
+        
       <pre><code>
-        int LED1 = 13; // Assigns variable LED1 to pin 13.
-        int LED2 = 12; // Assigns variable LED2 to pin 12.
-        int LED3 = 11; // Assigns variable LED3 to pin 11.
+            # include <CapacitiveSensor.h> // Importing Capacitive Sensor Library
+            CapacitiveSensor cs_4_2 = CapacitiveSensor(4, 2); // Initializes Capacitive Sensor
+            int light_pin = 9 ; // Identifies pin 9 as ligh_pin
+            int threshold = 400; // Initializes threshold for capacitive sensor
+            
+            void setup() {
+              Serial.begin(9600); // Initializes serial communication
+              pinMode(light_pin, OUTPUT); // Sets ligh_pin as an output pin.
+            }
+            
+            void loop() {
+              // Reads in capacitive sensor value
+              long touch_val = cs_4_2.capacitiveSensor(30);
+              // If capacitive sensor value is greater than threshold lights turn on
+              // Otherwise lights turn off.
+              if (touch_val > threshold) {
+                analogWrite(light_pin, 255);
+              } else {
+                analogWrite(light_pin, 0);
+              }
+            }
         
-        void setup() {
-            pinMode(LED1, OUTPUT); // Assigns LED1 pin as an output.
-            pinMode(LED2, OUTPUT); // Assigns LED2 pin as an output.
-            pinMode(LED3, OUTPUT); // Assigns LED3 pin as an output.
-        }
-        
-        void loop() {
-            digitalWrite(LED1, HIGH); // Turns LED1 on.
-            delay(500);              // Wait 500 ms.
-            digitalWrite(LED2, HIGH); // Turns LED2 on.
-            digitalWrite(LED1, LOW);  // Turns LED1 off.
-            delay(500);              // Wait 500 ms.
-            digitalWrite(LED3, HIGH); // Turns LED3 on.
-            digitalWrite(LED2, LOW);  // Turns LED2 off.
-            delay(500);              // Wait 500 ms.
-            digitalWrite(LED3, LOW);  // Turn LED3 off.
-        }
-              </code></pre>
+      </code></pre>
+      <img src="a5_AdditionalQuestions.jpg" style="display: block; width: auto; height: auto;" />
+      <pre><code>
+        SETUP:
+        Use pinMode to set pin 1, 2, 3, 5, 6, and 10 as outputs set to LOW. 
+        Corresponding Schematic: 1:EN, 2:EN, 3:1A , 5:2A ,  6:4A, 10:3A 
+        Define the motors.   
+        Use DigitalWrite to set motor1 and motor2 to HIGH (using pin 1 and pin 2 respectively).  
 
+        LOOP:
+        Move both motors forward:
+        Control motor 1 with digitalWrite, and set pin 5 to high and 3 to low.  
+        Control motor 2 with digitalWrite, and set pin 6 to high and pin 10 to low.
+
+        Move both motors backwards:
+        Control motor 1 using digitalWrite, and set pin 5 to low and pin 3 to high.  
+        Control motor 2 using digitalWrite, and set pin 6 to low and pin 10 to high. 
+
+        Move Motor1 forward and Motor2 backward:
+        Control motor 1 using digitalWrite, and set pin 5 to high and 3 to low.  
+        Control motor 2 using digitalWrite, and set pin 6 to low and 10 to high.
+
+        Move Motor 1 backward and Motor2 forward:
+        Control motor 1 using digitalWrite, and set pin 5 to low and 3 to high.  
+        Control motor 2 using digitalWrite, and set pin 6 to high and 10 to low.   
+
+        Stop motors before the loop restarts:
+        Set motors 1 and 2 to LOW.
+    
+  </code></pre>
     </div>
   </body>
 </html>
