@@ -15,8 +15,14 @@
         <br>
         <img src="a5_circuit.jpg" style="display: block; width: auto; height: auto;" />
         <img src="a5Schematic.jpg" style="display: block; width: auto; height: auto;" />
-        
-      <pre><code>
+        <p>
+          **Typo above. Input voltage should be 12 V DC.**
+          I used a 1 Mohm resistor because it provides a high resistance path so the capacitor can charge and discharge appropriately
+          and predictably. 
+          To calculate the current of the LED strip we divide power (16W) by Input voltage (12V).
+          Therefore our current, I = 1.33 A.
+          The transistor needs to handle 1.33 A, and its rated for 37.2A according to its datasheet.
+       <pre><code>
             # include <CapacitiveSensor.h> // Importing Capacitive Sensor Library
             CapacitiveSensor cs_4_2 = CapacitiveSensor(4, 2); // Initializes Capacitive Sensor
             int light_pin = 9 ; // Identifies pin 9 as ligh_pin
