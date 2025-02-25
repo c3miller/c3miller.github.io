@@ -15,6 +15,21 @@
         <br>
         <img src="a6circuitpic.jpg" style="display: block; width: auto; height: auto;" />
         <img src="a6schematic.jpg" style="display: block; width: auto; height: auto;" />
+        <p> Each led can handle 20 mA of current. After considering voltage drop
+            we can set up our V=IR equation.
+            Green and Red LED Voltage:
+            V = V - Vf = 5 - 1.8 = 3.2V.
+            Blue LED Voltage:
+            V = V - Vf = 5 - 3 = 2V.
+            GREEN and RED resistance:
+            R = V / I = 3.2V / 0.02A = 160 Ohm.
+            BLUE resistance:
+            R = V / I = 2V / 0.02A = 100 Ohm.
+            Therefore we will choose 220 ohm as an appropriate resistor for all LEDs.
+
+            We will use a 10k ohm resistor for the button because it is the standard to limit current across our Arduino.
+            
+        </p>
         <strong>Arduino Code</strong>
       <pre><code>
             #include <IRremote.h>  // Imports library for IR remote
