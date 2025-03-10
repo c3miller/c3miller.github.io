@@ -9,9 +9,209 @@
     <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <h1>Final Project Proposal</h1>
+    <h1>Final Project Documentation</h1>
     <div class>
+      <strong>Proposal/Description</strong>
         <img src="ScoreBuddyProposalAndDocumentation.png" />
+        <img src="FinalProjSchematic.jpg" />
+        <strong>Circuit</strong>
+        <img src="FinalProjCircuit.jpg" />
+        <strong>How Everything Works:</strong>
+        <p>
+          Score Buddy utilizes one input, the joystick module, to control two outputs, the LCD display 
+          and the active buzzer. When powered on, the user is prompted to toggle the target score to the desired
+          target using the joystick module. Then the user can use the joystick to tally points for each team and the LCD is updated
+          accordingly. Once the target score is reached the active buzzer will sound and the LCD Display will announce the winner.
+          A potentiometer is used to adjust the voltage to the LCD's contrast pin, Therefore adjusting the
+          contrast of the LCD text. A 220 ohm resistor is used to limit current flow to the LED backlight of the LCD.
+          A 9v battery is connected to the Arduino, which regulates 5V to the rest of the circuit. 
+        </p>
+        <strong>Code</strong>
+        <pre><code>
+          // Import LCD Library
+          #include <LiquidCrystal.h>
+          
+          // initialize the library by associating any needed LCD interface pin
+          // with the arduino pin number it is connected to
+          const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+          LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+          
+          // Joy stick setup
+          int xPin = A0;
+          int yPin = A1;
+          int clickPin = A2;
+          
+          // Scoreboard variables:
+          int score1 = 0, score2 = 0;
+          bool teamSelected = 0; // 0 = Home, 1 = Away
+          int lastX = 512; // Store last joystick X value
+          int lastY = 512; // Store last joystick Y value
+          int buzzerPin = 13; // Initialize pin 13 as 'buzzerPin'
+          int targetScore = 21; // default initial target score
+          bool gameActive = false; // Indicates if game has started.
+          
+          void setup() {
+            // set up the LCD's number of columns and rows:
+            lcd.begin(16, 2);
+            pinMode(clickPin, INPUT_PULLUP); // Enables internal pull-up resistor
+            pinMode(buzzerPin, OUTPUT); // Sets buzzer pin as an output.
+            selectTargetScore(); // Allows user to specify target score.
+            // Sets up scoreboard display
+            updateLCD();
+          }
+          
+          void loop() {
+            if (!gameActive) return; // Prevents loop when target score is not selected.
+            // Read joy stick actions.
+            int xValue = analogRead(xPin);
+            int yValue = analogRead(yPin);
+            int clickState = digitalRead(clickPin);
+          
+            // Switch teams
+            // Moved left : Home team selected
+            if (xValue < 400 && lastX >= 400) { 
+              teamSelected = 0;
+              updateLCD();
+            } 
+            // Moved right : Away team selected
+            if (xValue > 600 && lastX <= 600) { 
+              teamSelected = 1;
+              updateLCD();
+            }
+            lastX = xValue; // Update last x val
+          
+            // Upward Joystick Movement: Increase Score
+            if (yValue < 400 && lastY >= 400) { 
+              if (teamSelected == 0) {
+                score1++;
+              }
+              else {
+                score2++;
+              }
+              updateLCD();
+              // End game and annouce winner if target score has been reached.
+              if (score1 == targetScore || score2 == targetScore) {
+                gameOver();
+              }
+              delay(200); // Prevent rapid updates
+              }
+            
+          
+            // Downward movement: Decrease score (ensuring it doesn’t go below 0)
+            if (yValue > 600 && lastY <= 600) {  
+              if (teamSelected == 0 && score1 > 0) {
+                score1--;
+              } else if (teamSelected == 1 && score2 > 0) {
+                score2--;
+              }
+              updateLCD();
+              delay(200);  // Prevent rapid decrements
+            }
+            lastY = yValue; // update last y val
+          
+              // Reset score on joystick click:
+              if (clickState == LOW) {
+                delay(500); // Debounce delay
+                resetGame();
+                // delay(500); // Debounce delay
+              }
+          }
+          
+          // Ends game when target score is reached:
+          void gameOver() {
+            // Sound and turn off buzzer
+            digitalWrite(buzzerPin, HIGH);
+            delay(2000);
+            digitalWrite(buzzerPin, LOW);
+            //Announce winning team
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            if (score1 > score2) {
+              lcd.print("Home Wins!");
+            } else {
+              lcd.print("Away Wins!");
+            }
+            // Prompt user to reset the product
+            lcd.setCursor(0, 1);
+            lcd.print("Press to Reset");
+            // Rest game upon user click
+            while (digitalRead(clickPin) == HIGH); 
+            delay(200);
+            resetGame();
+          }
+          // Resets game/ back to target score selection
+          void resetGame() {
+            score1 = 0;
+            score2 = 0;
+            gameActive = false;
+            selectTargetScore();
+          }
+          
+          // Function to select target score
+          void selectTargetScore() {
+            int yValue;
+            // Update display
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Set Target Score:");
+            updateTargetLCD();
+            
+            // Until score is selected.
+            while (true) {
+              // Read in joystick movement
+              yValue = analogRead(yPin);
+              // Increase target score
+              if (yValue < 400) {
+                targetScore++;
+                updateTargetLCD();
+                delay(200);
+              }
+              
+              // Decrease target score
+              if (yValue > 600 && targetScore > 1) {
+                targetScore--;
+                updateTargetLCD();
+                delay(200);
+              }
+              
+              // Confirm selection
+              if (digitalRead(clickPin) == LOW) {
+                delay(200);
+                gameActive = true;
+                updateLCD();
+                break;
+              }
+            }
+          }
+          
+          // Function to update LCD display
+          void updateLCD() {
+              lcd.clear();
+              lcd.setCursor(0, 0);
+              lcd.print("Home: "); lcd.print(score1);
+              lcd.setCursor(0, 1);
+              lcd.print("Away: "); lcd.print(score2);
+          
+              // Indicate selected team
+              lcd.setCursor(10, teamSelected);
+              lcd.print("<");
+          
+              // Show target score
+              lcd.setCursor(13, 1);
+              lcd.print("/");
+              lcd.print(targetScore);
+          }
+          
+          // Function to update target score during selection.
+          void updateTargetLCD() {
+            lcd.setCursor(0, 1);
+            lcd.print("Target: ");
+            lcd.print(targetScore);
+            lcd.print("  "); // Clear any leftover digits
+          }
+      
+    </code></pre>
+
     </div>
   </body>
 </html>
